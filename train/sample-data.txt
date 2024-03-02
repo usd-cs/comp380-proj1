@@ -1,8 +1,4 @@
-A sample training set
- 
-63 	// dimension of input pattern
-7  	// dimension of output pattern
-21 	// number of training or testing pairs
+63 7 21 
 
 -1 -1  1  1 -1 -1 -1
 -1 -1 -1  1 -1 -1 -1

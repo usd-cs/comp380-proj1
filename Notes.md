@@ -20,3 +20,5 @@
 - LNITest, which has low noise-interference (LNI) input patterns
 - MNITest, which has medium noise-interference (MNI) input patterns
 - HNITest, which has high noise-interference (HNI) input patterns by adding 6 additional wrong pixels wisely for each letter in LNITest
+
+- First line has 3 numbers respectively: dimension of input pattern, dimension of output pattern, number of training or testing pairs
