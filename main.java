@@ -5,54 +5,84 @@ Date: 3/2/2024
 Description: This is the driver file of our program. It will prompt the user for perceptron hyperparamaters then train it.
  */
 
+ // TODO: Need to add random function, call neccessary methods from perceptron and file handler
+
 import java.util.Scanner;
 import java.util.Random;
 
 public class main {
-    public static void mainMethod(String[] args) {
+    public static void main(String[] args) {
         // Prompt user for hyperparameters
-        Scanner scanner = new Scanner(System.in);
+        Scanner kb = new Scanner(System.in);
         Random random = new Random();
+        boolean run = true;
 
         System.out.println("Welcome to my first neural network - A Perceptron Net!");
 
+        while(run){
+            // Prompt for training or testing
+            System.out.println("Enter 1 to train using a training data file, enter 2 to use a trained weight settings data file");
+            int choice = kb.nextInt();
 
-        // Prompt for training or testing
-        System.out.println("Enter 1 to train using a training data file, enter 2 to use a trained weight settings\r\n" + //
-                    "data file");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+            switch(choice){
 
-        if (choice == 1){
-            System.out.println("Enter the training data file name:");
-            String trainingDataFile = scanner.nextLine();
-            scanner.nextLine();
+                case 1: // Train
+                    System.out.println("Enter the training data file name:");
+                    String trainingDataFile = kb.nextLine();
 
-            System.out.println("Enter 0 to initialize weights to 0, enter 1 to initailize weights to random values between -0.5 and 0.5");
-            int weightInit = scanner.nextInt();
-            scanner.nextLine();
+                    System.out.println("Enter 0 to initialize weights to 0, enter 1 to initailize weights to random values between -0.5 and 0.5");
+                    int weightInit = kb.nextInt();
 
-            System.out.println("Enter the maximum number of training epochs:");
-            int maxEpochs = scanner.nextInt();
-            scanner.nextLine();
+                    System.out.println("Enter the maximum number of training epochs:");
+                    int maxEpochs = kb.nextInt();
 
-            System.out.println("Enter a file name to save the trained weight settings:");
-            String weightSettingsFile = scanner.nextLine();
-            scanner.nextLine();
+                    System.out.println("Enter a file name to save the trained weight settings:");
+                    String weightSettingsFile = kb.nextLine();
 
-            System.out.println("Enter the learning rate alpha from 0 to 1 but not including 0:");
-            double alpha = scanner.nextDouble();
-            scanner.nextLine();
+                    System.out.println("Enter the learning rate alpha from 0 to 1 but not including 0:");
+                    double alpha = kb.nextDouble();
 
-            System.out.println("Enter the threshold theta:");
-            double theta = scanner.nextDouble();
-            scanner.nextLine();
+                    System.out.println("Enter the threshold theta:");
+                    double theta = kb.nextDouble();
 
-            System.out.println("Enter the threshold to be used for measuring weight changes:");
-            double threshold = scanner.nextDouble();
-            scanner.nextLine();
+                    System.out.println("Enter the threshold to be used for measuring weight changes:");
+                    double threshold = kb.nextDouble();
 
-            scanner.close();
+                    // Train the perceptron
+                    perceptron p = new perceptron();
+                    p.train(trainingDataFile, weightInit, maxEpochs, weightSettingsFile, alpha, theta, threshold);
+
+                    System.out.println("Training converged after " + p.getEpochs() + " epochs. The trained weight settings have been saved to " + weightSettingsFile);
+
+                    // Asking user if they wish to run again
+                    System.out.println("Do you want to run the program again?(Y/N)");
+                    String rerunProgram = kb.nextLine();
+                    if (!rerunProgram.equalsIgnoreCase("Y")) {
+                        run = false;
+                    }
+                    break;
+                
+                case 2: // Test
+                    perceptron pTest = new perceptron();
+                    System.out.println("Enter the testing/deploying data file name:");
+                    String testingDataFile = kb.nextLine();
+
+                    pTest.loadWeights(testingDataFile);
+                    System.out.println("Enter a file name to save the testing/deploying results:");
+                    String resultsFile = kb.nextLine();
+                    pTest.test(testingDataFile, resultsFile);
+
+                    // Asking user if they wish to run again
+                    System.out.println("Do you want to run the program again?(Y/N)");
+                    String rerun = kb.nextLine();
+                    if (!rerun.equalsIgnoreCase("Y")) {
+                        run = false;
+                    }
+                    break;
+            }
+
+
         }
+        kb.close();
     }
 }
