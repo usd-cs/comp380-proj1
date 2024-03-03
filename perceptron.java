@@ -31,7 +31,6 @@ public class Perceptron {
         ArrayList<ArrayList<Integer>> targetSet = inputData.targetSet;
         
 
-        
     }
 
     public String getEpochs() {
@@ -45,7 +44,7 @@ public class Perceptron {
     public void loadWeights(String testingDataFile) {
         throw new UnsupportedOperationException("Unimplemented method 'loadWeights'");
     }
-    
+
 }
 
 

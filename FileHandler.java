@@ -13,56 +13,51 @@ import java.util.Scanner;
 public class FileHandler {
     String trainPath = "train/";
     String testPath = "test/";
+    String weightPath = "weights/";
+    String resultPath = "results/";
 
-    // Method to read input data from file
+    // read input data from file, can be used for training or testing
     public InputData readInputData(String filePath) throws FileNotFoundException {
-        // Open file for reading
         File trainData = new File(trainPath + filePath);
         Scanner kb = new Scanner(trainData);
 
-        // Read dimensions, output size, and number of pairs
         int numDimensions = kb.nextInt();
         int outputSize = kb.nextInt();
         int numPairs = kb.nextInt();
-
-        // Initialize ArrayLists to store data
         ArrayList<String> charList = new ArrayList<>();
         ArrayList<ArrayList<Integer>> trainingSet = new ArrayList<>();
         ArrayList<ArrayList<Integer>> targetSet = new ArrayList<>();
 
-        // Read pairs of data
+        // looping through data pairs
         for (int i = 0; i < numPairs; i++) {
-            // Initialize lists for training and target data
             ArrayList<Integer> target = new ArrayList<>();
             ArrayList<Integer> training = new ArrayList<>();
 
-            // Read training data
+            // training data
             for (int j = 0; j < numDimensions; j++) {
                 int value = kb.nextInt();
                 training.add(value);
             }
             trainingSet.add(training);
 
-            // Read target data
+            // target data
             for (int j = 0; j < outputSize; j++) {
                 int value = kb.nextInt();
                 target.add(value);
             }
             targetSet.add(target);
 
-            // Read character (e.g., "A1")
+            // read characters for debugging
             String character = kb.next();
             charList.add(character);
         }
 
-        // Close scanner
         kb.close();
 
-        // Return an object containing all the data read
+        // returning multiple values
         return new InputData(numDimensions, outputSize, numPairs, charList, trainingSet, targetSet);
     }
 
-    // Method to write results to file
     public void writeResults(String filePath, ArrayList<Integer> results) {
         // TODO: Implement method to write results to file
         throw new UnsupportedOperationException("Unimplemented method 'writeResults'");
