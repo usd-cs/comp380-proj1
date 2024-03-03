@@ -5,16 +5,15 @@ Date: 3/2/2024
 Description: This is the driver file of our program. It will prompt the user for perceptron hyperparamaters then train it.
  */
 
- // TODO: Need to add random function, call neccessary methods from perceptron and file handler
+ // TODO: For the most part, this is almost done. Just need to return accuracy and finish fileHandler and perceptron classes.
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.util.Random;
 
-public class main {
-    public static void main(String[] args) {
+public class proj1 {
+    public static void main(String[] args) throws FileNotFoundException {
         // Prompt user for hyperparameters
         Scanner kb = new Scanner(System.in);
-        Random random = new Random();
         boolean run = true;
 
         System.out.println("Welcome to my first neural network - A Perceptron Net!");
@@ -49,7 +48,7 @@ public class main {
                     double threshold = kb.nextDouble();
 
                     // Train the perceptron
-                    perceptron p = new perceptron();
+                    Perceptron p = new Perceptron();
                     p.train(trainingDataFile, weightInit, maxEpochs, weightSettingsFile, alpha, theta, threshold);
 
                     System.out.println("Training converged after " + p.getEpochs() + " epochs. The trained weight settings have been saved to " + weightSettingsFile);
@@ -63,7 +62,7 @@ public class main {
                     break;
                 
                 case 2: // Test
-                    perceptron pTest = new perceptron();
+                    Perceptron pTest = new Perceptron();
                     System.out.println("Enter the testing/deploying data file name:");
                     String testingDataFile = kb.nextLine();
 
@@ -78,6 +77,10 @@ public class main {
                     if (!rerun.equalsIgnoreCase("Y")) {
                         run = false;
                     }
+                    break;
+                
+                default:
+                    System.out.println("Invalid input. Please enter 1 or 2.");
                     break;
             }
 
