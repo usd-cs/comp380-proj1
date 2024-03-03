@@ -93,6 +93,7 @@ public class Perceptron {
         return Integer.toString(numEpochs);
     }
 
+    // TODO: need to finish this, taking a break
     public void initializeWeightsAndBiases(int weightInit) {
         if (weightInit == 0) {
             for (int i = 0; i < weights.size(); i++) {
