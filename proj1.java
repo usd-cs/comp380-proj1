@@ -27,6 +27,7 @@ public class proj1 {
 
                 case 1: // Train
                     System.out.println("Enter the training data file name:");
+                    kb.nextLine();
                     String trainingDataFile = kb.nextLine();
 
                     System.out.println("Enter 0 to initialize weights to 0, enter 1 to initailize weights to random values between -0.5 and 0.5");
@@ -36,6 +37,7 @@ public class proj1 {
                     int maxEpochs = kb.nextInt();
 
                     System.out.println("Enter a file name to save the trained weight settings:");
+                    kb.nextLine();
                     String weightSettingsFile = kb.nextLine();
 
                     System.out.println("Enter the learning rate alpha from 0 to 1 but not including 0:");
@@ -55,6 +57,7 @@ public class proj1 {
 
                     // Asking user if they wish to run again
                     System.out.println("Do you want to run the program again?(Y/N)");
+                    kb.nextLine();
                     String rerunProgram = kb.nextLine();
                     if (!rerunProgram.equalsIgnoreCase("Y")) {
                         run = false;

@@ -13,7 +13,14 @@ public class Perceptron {
     Random random = new Random();
     FileHandler fileHandler = new FileHandler();
 
-    int numEpochs = 0;
+    int numEpochs = 1;
+    public ArrayList<Double> weights;
+    public ArrayList<Double> biases;
+    public boolean stoppingCondition;
+    int numDimensions;
+    int outputSize;
+    int numPairs;
+    
     public void train(String trainingDataFile, int weightInit, int maxEpochs, String weightSettingsFile, double alpha,
             double theta, double threshold) throws FileNotFoundException {
         /*
@@ -23,22 +30,82 @@ public class Perceptron {
          * So the function below returns that class. 
          */
         FileHandler.InputData inputData = fileHandler.readInputData(trainingDataFile);
-        int numDimensions = inputData.numDimensions;
-        int outputSize = inputData.outputSize;
-        int numPairs = inputData.numPairs;
+        numDimensions = inputData.numDimensions;
+        outputSize = inputData.outputSize;
+        numPairs = inputData.numPairs;
+        weights = new ArrayList<>(numDimensions);
+        biases = new ArrayList<>(outputSize);
+        initializeWeightsAndBiases(weightInit);
+        stoppingCondition = false;
         ArrayList<String> charList = inputData.charList;
         ArrayList<ArrayList<Integer>> trainingSet = inputData.trainingSet;
         ArrayList<ArrayList<Integer>> targetSet = inputData.targetSet;
-        
 
-    }
 
-    public String getEpochs() {
-        throw new UnsupportedOperationException("Unimplemented method 'getEpochs'");
+        while (!stoppingCondition && numEpochs < maxEpochs) {
+            stoppingCondition = true;  
+
+            for (int k = 0; k < trainingSet.size(); k++) {
+                ArrayList<Integer> input = trainingSet.get(k);
+                ArrayList<Integer> targets = targetSet.get(k);  // Get the target vector for this input
+            
+                //  set activation of each input unit
+                ArrayList<Integer> activations = new ArrayList<>(input);
+            
+                // compute activation of each output unit
+                for (int j = 0; j < biases.size(); j++) {
+                    double y_in_j = biases.get(j);
+            
+                    for (int i = 0; i < weights.size(); i++) {
+                        y_in_j += activations.get(i) + alpha * weights.get(i);
+                    }
+            
+                    // activation function
+                    int y_j;
+                    if (y_in_j > theta) {
+                        y_j = 1;
+                    } else if (-theta <= y_in_j && y_in_j <= theta) {
+                        y_j = 0;
+                    } else {
+                        y_j = -1;
+                    }
+            
+                    // update biases and weights
+                    int target = targets.get(j);  // Get the target for this output unit
+                    if (Math.abs(target - y_j) > threshold) {
+                        biases.set(j, biases.get(j) + target);
+                        for (int i = 0; i < weights.size(); i++) {
+                            weights.set(i, weights.get(i) + alpha * target * activations.get(i));
+                        }
+                        numEpochs++;
+                        stoppingCondition = false;  
+                    }
+                }
+            }
+        }
     }
 
     public void test(String testingDataFile, String resultsFile) {
         throw new UnsupportedOperationException("Unimplemented method 'test'");
+    }
+
+    public String getEpochs() {
+        return Integer.toString(numEpochs);
+    }
+
+    public void initializeWeightsAndBiases(int weightInit) {
+        if (weightInit == 0) {
+            for (int i = 0; i < weights.size(); i++) {
+                weights.add(0.0);
+            }
+            for (int j = 0; j < biases.size(); j++) {
+                biases.add(0.0);
+            }
+        } else {
+            for (int i = 0; i < weights.size(); i++) {
+                weights.add(random.nextDouble() - 0.5);
+            }
+        }
     }
 
     public void loadWeights(String testingDataFile) {
@@ -60,52 +127,47 @@ public class Perceptron {
 //         stoppingCondition = false;
 //     }
 
-//     public void initializeWeightsAndBiases() {
-//         for (int j = 0; j < biases.size(); j++) {
-//             biases.add(0.0);
-//         }
-//     }
 
 //     public void train(ArrayList<ArrayList<Integer> trainingSet, ArrayList<Integer> targetSet, double theta) {
-//         while (!stoppingCondition) {
-//             stoppingCondition = true;  
+        // while (!stoppingCondition) {
+        //     stoppingCondition = true;  
 
-//             for (int k = 0; k < trainingSet.size(); k++) {
-//                 ArrayList<Integer> input = trainingSet.get(k);
-//                 int target = targetSet.get(k);
+        //     for (int k = 0; k < trainingSet.size(); k++) {
+        //         ArrayList<Integer> input = trainingSet.get(k);
+        //         int target = targetSet.get(k);
 
-//                 //  set activation of each input unit
-//                 ArrayList<Double> activations = new ArrayList<>(input);
+        //         //  set activation of each input unit
+        //         ArrayList<Double> activations = new ArrayList<>(input);
 
-//                 // compute activation of each output unit
-//                 for (int j = 0; j < biases.size(); j++) {
-//                     double y_in_j = biases.get(j);
+        //         // compute activation of each output unit
+        //         for (int j = 0; j < biases.size(); j++) {
+        //             double y_in_j = biases.get(j);
 
-//                     for (int i = 0; i < weights.size(); i++) {
-//                         y_in_j += input.get(i) * weights.get(i);
-//                     }
+        //             for (int i = 0; i < weights.size(); i++) {
+        //                 y_in_j += input.get(i) * weights.get(i);
+        //             }
 
-//                     // activation function
-//                     int y_j;
-//                     if (y_in_j > theta) {
-//                         y_j = 1;
-//                     } else if (-theta <= y_in_j && y_in_j <= theta) {
-//                         y_j = 0;
-//                     } else {
-//                         y_j = -1;
-//                     }
+        //             // activation function
+        //             int y_j;
+        //             if (y_in_j > theta) {
+        //                 y_j = 1;
+        //             } else if (-theta <= y_in_j && y_in_j <= theta) {
+        //                 y_j = 0;
+        //             } else {
+        //                 y_j = -1;
+        //             }
 
-//                     // update biases and weights
-//                     if (target != y_j) {
-//                         biases.set(j, biases.get(j) + target);
-//                         for (int i = 0; i < weights.size(); i++) {
-//                             weights.set(i, weights.get(i) + target * input.get(i));
-//                         }
-//                         stoppingCondition = false;  
-//                     }
-//                 }
-//             }
-//         }
+        //             // update biases and weights
+        //             if (target != y_j) {
+        //                 biases.set(j, biases.get(j) + target);
+        //                 for (int i = 0; i < weights.size(); i++) {
+        //                     weights.set(i, weights.get(i) + target * input.get(i));
+        //                 }
+        //                 stoppingCondition = false;  
+        //             }
+        //         }
+        //     }
+        // }
 //     }
 // }
 
