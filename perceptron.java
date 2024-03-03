@@ -61,8 +61,8 @@ public class Perceptron {
         }
     }
 }
-=======
-public class perceptron {
+
+/* public class perceptron {
 
     public void train(String trainingDataFile, int weightInit, int maxEpochs, String weightSettingsFile, double alpha,
             double theta, double threshold) {
@@ -85,5 +85,5 @@ public class perceptron {
         throw new UnsupportedOperationException("Unimplemented method 'loadWeights'");
     }
     
-}
->>>>>>> 5d0ecaf924ee352489762b9dc7747c565f022495
+} */
+
