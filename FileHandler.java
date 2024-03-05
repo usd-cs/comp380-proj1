@@ -72,7 +72,6 @@ public class FileHandler {
         ArrayList<ArrayList<Integer>> trainingSet;
         ArrayList<ArrayList<Integer>> targetSet;
 
-        // Constructor
         public InputData(int numDimensions, int outputSize, int numPairs,
                          ArrayList<String> charList, ArrayList<ArrayList<Integer>> trainingSet,
                          ArrayList<ArrayList<Integer>> targetSet) {

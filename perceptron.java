@@ -85,6 +85,9 @@ public class Perceptron {
         }
     }
 
+    public void SaveWeights(String weightSettingsFile) {
+        // TODO
+    }
     public void test(String testingDataFile, String resultsFile) {
         throw new UnsupportedOperationException("Unimplemented method 'test'");
     }
