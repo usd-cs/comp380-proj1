@@ -13,7 +13,7 @@ public class Perceptron {
     Random random = new Random();
     FileHandler fileHandler = new FileHandler();
 
-    int numEpochs = 1;
+    int numEpochs = 0;
     public ArrayList<Double> weights;
     public ArrayList<Double> biases;
     public boolean stoppingCondition;
@@ -43,6 +43,7 @@ public class Perceptron {
 
 
         while (!stoppingCondition && numEpochs < maxEpochs) {
+            numEpochs++;
             stoppingCondition = true;  
 
             for (int k = 0; k < trainingSet.size(); k++) {
@@ -57,7 +58,7 @@ public class Perceptron {
                     double y_in_j = biases.get(j);
             
                     for (int i = 0; i < weights.size(); i++) {
-                        y_in_j += activations.get(i) + alpha * weights.get(i);
+                        y_in_j += activations.get(i) * weights.get(i);
                     }
             
                     // activation function
@@ -75,9 +76,8 @@ public class Perceptron {
                     if (Math.abs(target - y_j) > threshold) {
                         biases.set(j, biases.get(j) + target);
                         for (int i = 0; i < weights.size(); i++) {
-                            weights.set(i, weights.get(i) + alpha * target * activations.get(i));
+                            weights.set(i, weights.get(i) + alpha * (target - y_j) * activations.get(i));
                         }
-                        numEpochs++;
                         stoppingCondition = false;  
                     }
                 }
@@ -93,21 +93,25 @@ public class Perceptron {
         return Integer.toString(numEpochs);
     }
 
-    // TODO: need to finish this, taking a break
+    // Finished Implementation
     public void initializeWeightsAndBiases(int weightInit) {
         if (weightInit == 0) {
-            for (int i = 0; i < weights.size(); i++) {
+            for (int i = 0; i < numDimensions; i++) {
                 weights.add(0.0);
             }
-            for (int j = 0; j < biases.size(); j++) {
+            for (int j = 0; j < outputSize; j++) {
                 biases.add(0.0);
             }
         } else {
-            for (int i = 0; i < weights.size(); i++) {
+            for (int i = 0; i < numDimensions; i++) {
                 weights.add(random.nextDouble() - 0.5);
+            }
+            for (int j = 0; j < outputSize; j++) {
+                biases.add(random.nextDouble() - 0.5);
             }
         }
     }
+    
 
     public void loadWeights(String testingDataFile) {
         throw new UnsupportedOperationException("Unimplemented method 'loadWeights'");

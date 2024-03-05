@@ -26,7 +26,7 @@ public class proj1 {
             switch(choice){
 
                 case 1: // Train
-                    System.out.println("Enter the training data file name:");
+                    System.out.println("Enter the training data file name (add .txt extension):");
                     kb.nextLine();
                     String trainingDataFile = kb.nextLine();
 
@@ -36,7 +36,7 @@ public class proj1 {
                     System.out.println("Enter the maximum number of training epochs:");
                     int maxEpochs = kb.nextInt();
 
-                    System.out.println("Enter a file name to save the trained weight settings:");
+                    System.out.println("Enter a file name to save the trained weight settings (add .txt extension):");
                     kb.nextLine();
                     String weightSettingsFile = kb.nextLine();
 
