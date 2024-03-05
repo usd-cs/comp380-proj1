@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Perceptron {
+public class perceptron {
     Random random = new Random();
     FileHandler fileHandler = new FileHandler();
 

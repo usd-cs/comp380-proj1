@@ -50,7 +50,7 @@ public class proj1 {
                     double threshold = kb.nextDouble();
 
                     // Train the perceptron
-                    Perceptron p = new Perceptron();
+                    perceptron p = new perceptron();
                     p.train(trainingDataFile, weightInit, maxEpochs, weightSettingsFile, alpha, theta, threshold);
 
                     System.out.println("Training converged after " + p.getEpochs() + " epochs. The trained weight settings have been saved to " + weightSettingsFile);
@@ -65,7 +65,7 @@ public class proj1 {
                     break;
                 
                 case 2: // Test
-                    Perceptron pTest = new Perceptron();
+                    perceptron pTest = new perceptron();
                     System.out.println("Enter the testing/deploying data file name:");
                     String testingDataFile = kb.nextLine();
 
