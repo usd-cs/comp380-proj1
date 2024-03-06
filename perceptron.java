@@ -101,8 +101,57 @@ public class perceptron {
         }
     }
 
-    public void test(String testingDataFile, String resultsFile) {
-        throw new UnsupportedOperationException("Unimplemented method 'test'");
+    public void test(String testingDataFile, String resultsFile, double theta) {
+        // Read testing data
+        FileHandler.InputData inputData = fileHandler.readInputData(testingDataFile);
+        ArrayList<ArrayList<Integer>> testSet = inputData.trainingSet;
+        ArrayList<ArrayList<Integer>> targetSet = inputData.targetSet;
+        int numDimensions = inputData.numDimensions;
+        int outputSize = inputData.outputSize;
+        int numPairs = inputData.numPairs;
+
+        // Test the perceptron
+        testPerceptron(testSet, targetSet, weights, biases, theta);
+    }
+
+    public void testPerceptron(ArrayList<ArrayList<Integer>> testSet, ArrayList<ArrayList<Integer>> targetSet, double theta) {
+        int correctPredictions = 0;
+        int totalSamples = testSet.size();
+
+        for (int k = 0; k < totalSamples; k++) {
+            ArrayList<Integer> input = testSet.get(k);
+            ArrayList<Integer> targets = targetSet.get(k);
+
+            ArrayList<Integer> activations = new ArrayList<>(input);
+
+            // Compute activation of each output unit
+            for (int j = 0; j < biases.size(); j++) {
+                double y_in_j = biases.get(j);
+
+                for (int i = 0; i < weights.size(); i++) {
+                    y_in_j += activations.get(i) * weights.get(i);
+                }
+
+                // Activation function
+                int y_j;
+                if (y_in_j > theta) {
+                    y_j = 1;
+                } else if (-theta <= y_in_j && y_in_j <= theta) {
+                    y_j = 0;
+                } else {
+                    y_j = -1;
+                }
+
+                // Compare with target and count correct predictions
+                if (y_j == targets.get(j)) {
+                    correctPredictions++;
+                }
+            }
+        }
+
+        // Compute accuracy
+        double accuracy = (double) correctPredictions / totalSamples;
+        System.out.println("Accuracy: " + (accuracy * 100) + "%");
     }
 
     public String getEpochs() {
