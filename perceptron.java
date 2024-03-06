@@ -6,9 +6,13 @@ Description: Responsible for training and testing the perceptron. Utilizes FileH
 */
 
 import java.io.PrintWriter;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.io.File;
 
 public class perceptron {
     Random random = new Random();
@@ -183,8 +187,52 @@ public class perceptron {
     }
     
 
-    public void loadWeights(String testingDataFile) {
-        throw new UnsupportedOperationException("Unimplemented method 'loadWeights'");
+    public void loadWeights(String weightSettingsFile) throws IOException {
+        String fullPath = "weights/" + weightSettingsFile;
+        File file = new File(fullPath);
+        
+        if (!file.exists()) {
+            throw new FileNotFoundException("The file " + fullPath + " does not exist.");
+        }
+        
+        if (file.isDirectory()) {
+            throw new FileNotFoundException(fullPath + " is a directory, not a file.");
+        }
+    
+        BufferedReader reader = new BufferedReader(new FileReader(fullPath));
+    
+        // Initialize or clear weights and biases lists
+        weights = weights == null ? new ArrayList<>() : weights;
+        biases = biases == null ? new ArrayList<>() : biases;
+        weights.clear();
+        biases.clear();
+    
+        // First line: dimensions and pairs
+        String line = reader.readLine();
+        if (line == null) throw new IOException("Unexpected end of file while reading dimensions.");
+        String[] dimensions = line.split(" ");
+        if (dimensions.length < 3) throw new IOException("Dimensions line does not contain enough values.");
+    
+        // Assuming weights are on the next line
+        line = reader.readLine();
+        if (line == null) throw new IOException("Unexpected end of file while reading weights.");
+        String[] weightValues = line.trim().split(" ");
+        for (String value : weightValues) {
+            weights.add(Double.parseDouble(value));
+        }
+    
+        // Assuming biases are on the next line
+        line = reader.readLine();
+        if (line == null) throw new IOException("Unexpected end of file while reading biases.");
+        String[] biasValues = line.trim().split(" ");
+        for (String value : biasValues) {
+            biases.add(Double.parseDouble(value));
+        }
+    
+        reader.close();
     }
+    
+    
+    
 
 }

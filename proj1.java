@@ -7,11 +7,11 @@ Description: This is the driver file of our program. It will prompt the user for
 
  // TODO: For the most part, this is almost done. Just need to return accuracy and finish fileHandler and perceptron classes.
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class proj1 {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         // Prompt user for hyperparameters
         Scanner kb = new Scanner(System.in);
         boolean run = true;
@@ -22,6 +22,7 @@ public class proj1 {
             // Prompt for training or testing
             System.out.println("Enter 1 to train using a training data file, enter 2 to use a trained weight settings data file");
             int choice = kb.nextInt();
+            kb.nextLine();
 
             switch(choice){
 
