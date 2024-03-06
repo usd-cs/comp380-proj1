@@ -72,7 +72,7 @@ public class proj1 {
                     pTest.loadWeights(testingDataFile);
                     System.out.println("Enter a file name to save the testing/deploying results:");
                     String resultsFile = kb.nextLine();
-                    pTest.test(testingDataFile, resultsFile);
+                    // pTest.test(testingDataFile, resultsFile);
 
                     // Asking user if they wish to run again
                     System.out.println("Do you want to run the program again?(Y/N)");

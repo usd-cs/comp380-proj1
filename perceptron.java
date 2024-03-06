@@ -21,7 +21,8 @@ public class perceptron {
     int numDimensions;
     int outputSize;
     int numPairs;
-    
+    long duration;
+
     public void train(String trainingDataFile, int weightInit, int maxEpochs, String weightSettingsFile, double alpha,
             double theta, double threshold) throws FileNotFoundException {
         /*
@@ -42,7 +43,8 @@ public class perceptron {
         ArrayList<ArrayList<Integer>> trainingSet = inputData.trainingSet;
         ArrayList<ArrayList<Integer>> targetSet = inputData.targetSet;
 
-
+        // Logging Time for Validating hyperparameters
+        long startTime = System.nanoTime();
         while (!stoppingCondition && numEpochs < maxEpochs) {
             numEpochs++;
             stoppingCondition = true;  
@@ -86,6 +88,8 @@ public class perceptron {
                 }
             }
         }
+        long endTime = System.nanoTime();
+        duration = (endTime - startTime);
     }
 
     public void SaveWeights(String weightSettingsFile) {
@@ -93,6 +97,7 @@ public class perceptron {
             String path = "weights/" + weightSettingsFile;
             PrintWriter writer = new PrintWriter(path, "UTF-8");
             writer.println(numDimensions + " " + outputSize + " " + numPairs);
+            writer.println(duration); // time to train for analysis
             writer.println(weights.toString().replace("[", "").replace("]", "").replace(",", ""));
             writer.println(biases.toString().replace("[", "").replace("]", "").replace(",", ""));
             writer.close();
@@ -101,7 +106,7 @@ public class perceptron {
         }
     }
 
-    public void test(String testingDataFile, String resultsFile, double theta) {
+    public void test(String testingDataFile, String resultsFile, double theta) throws FileNotFoundException {
         // Read testing data
         FileHandler.InputData inputData = fileHandler.readInputData(testingDataFile);
         ArrayList<ArrayList<Integer>> testSet = inputData.trainingSet;
@@ -114,7 +119,7 @@ public class perceptron {
         testPerceptron(testSet, targetSet, weights, biases, theta);
     }
 
-    public void testPerceptron(ArrayList<ArrayList<Integer>> testSet, ArrayList<ArrayList<Integer>> targetSet, double theta) {
+    public void testPerceptron(ArrayList<ArrayList<Integer>> testSet, ArrayList<ArrayList<Integer>> targetSet, ArrayList<Double> weights, ArrayList<Double> biases, double theta) {
         int correctPredictions = 0;
         int totalSamples = testSet.size();
 
