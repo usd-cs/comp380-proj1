@@ -5,6 +5,7 @@ Date: 3/2/2024
 Description: Responsible for training and testing the perceptron. Utilizes FileHandler for modularity.
 */
 
+import java.io.PrintWriter;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -88,8 +89,18 @@ public class perceptron {
     }
 
     public void SaveWeights(String weightSettingsFile) {
-        // TODO
+        try {
+            String path = "weights/" + weightSettingsFile;
+            PrintWriter writer = new PrintWriter(path, "UTF-8");
+            writer.println(numDimensions + " " + outputSize + " " + numPairs);
+            writer.println(weights.toString().replace("[", "").replace("]", "").replace(",", ""));
+            writer.println(biases.toString().replace("[", "").replace("]", "").replace(",", ""));
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
     public void test(String testingDataFile, String resultsFile) {
         throw new UnsupportedOperationException("Unimplemented method 'test'");
     }

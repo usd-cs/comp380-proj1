@@ -52,7 +52,7 @@ public class proj1 {
                     // Train the perceptron
                     perceptron p = new perceptron();
                     p.train(trainingDataFile, weightInit, maxEpochs, weightSettingsFile, alpha, theta, threshold);
-
+                    p.SaveWeights(weightSettingsFile);
                     System.out.println("Training converged after " + p.getEpochs() + " epochs. The trained weight settings have been saved to " + weightSettingsFile);
 
                     // Asking user if they wish to run again
