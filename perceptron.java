@@ -27,14 +27,9 @@ public class perceptron {
     int numPairs;
     long duration;
 
+    // Train method: called from main class
     public void train(String trainingDataFile, int weightInit, int maxEpochs, String weightSettingsFile, double alpha,
             double theta, double threshold) throws FileNotFoundException {
-        /*
-         * When i was working on passing the training data from the file,
-         * I forgot I can't return multiple values in a function like python.
-         * I built a static class to access the data to keep this file clean.
-         * So the function below returns that class. 
-         */
         FileHandler.InputData inputData = fileHandler.readInputData(trainingDataFile, fileHandler.trainPath);
         numDimensions = inputData.numDimensions;
         outputSize = inputData.outputSize;
@@ -100,8 +95,7 @@ public class perceptron {
         try {
             String path = "weights/" + weightSettingsFile;
             PrintWriter writer = new PrintWriter(path, "UTF-8");
-            writer.println(numDimensions + " " + outputSize + " " + numPairs);
-            writer.println(duration); // time to train for analysis
+            writer.println(numDimensions + " " + outputSize + " " + numPairs + " " + duration);
             writer.println(weights.toString().replace("[", "").replace("]", "").replace(",", ""));
             writer.println(biases.toString().replace("[", "").replace("]", "").replace(",", ""));
             writer.close();
@@ -109,9 +103,10 @@ public class perceptron {
             e.printStackTrace();
         }
     }
+
     public void test(String testingDataFile, String resultsFile, double theta) throws FileNotFoundException, IOException {
         // Read testing data
-        FileHandler.InputData inputData = fileHandler.readInputData(testingDataFile, fileHandler.weightPath);
+        FileHandler.InputData inputData = fileHandler.readInputData(testingDataFile, fileHandler.testPath);
         ArrayList<ArrayList<Integer>> testSet = inputData.trainingSet;
         ArrayList<ArrayList<Integer>> targetSet = inputData.targetSet;
         ArrayList<String> charList = inputData.charList;
@@ -120,12 +115,14 @@ public class perceptron {
         // Pass resultsFile to the testing method
         testPerceptron(testSet, targetSet, weights, biases, theta, resultsFile, charList);
     }
+
     public void testPerceptron(ArrayList<ArrayList<Integer>> testSet, ArrayList<ArrayList<Integer>> targetSet, ArrayList<Double> weights, ArrayList<Double> biases, double theta, String resultsFile,  ArrayList<String> charList) throws IOException {
         int correctPredictions = 0;
         int totalSamples = testSet.size();
-    
+        String path = "results/" + resultsFile;
+
         // Open the file writer
-        PrintWriter writer = new PrintWriter(resultsFile, "UTF-8");
+        PrintWriter writer = new PrintWriter(path, "UTF-8");
     
         for (int k = 0; k < totalSamples; k++) {
             ArrayList<Integer> input = testSet.get(k);
@@ -188,7 +185,7 @@ public class perceptron {
         return sb.toString().trim();
     }
     
-
+    // Get method used for UI and results
     public String getEpochs() {
         return Integer.toString(numEpochs);
     }
@@ -212,9 +209,9 @@ public class perceptron {
         }
     }
     
-
-    public void loadWeights(String weightSettingsFile) throws IOException {
-        String fullPath = fileHandler.weightPath + weightSettingsFile;
+    // Loads weights for testing
+    public void loadWeights(String weightSettingsFileTest) throws IOException {
+        String fullPath = fileHandler.weightPath + weightSettingsFileTest;
         File file = new File(fullPath);
         
         if (!file.exists()) {
@@ -237,6 +234,10 @@ public class perceptron {
         String line = reader.readLine();
         if (line == null) throw new IOException("Unexpected end of file while reading dimensions.");
         String[] dimensions = line.split(" ");
+        numDimensions = Integer.parseInt(dimensions[0]);
+        outputSize = Integer.parseInt(dimensions[1]);
+        numPairs = Integer.parseInt(dimensions[2]);
+        duration = Long.parseLong(dimensions[3]);
         if (dimensions.length < 3) throw new IOException("Dimensions line does not contain enough values.");
     
         // Assuming weights are on the next line

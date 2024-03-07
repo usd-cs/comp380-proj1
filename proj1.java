@@ -22,7 +22,6 @@ public class proj1 {
             // Prompt for training or testing
             System.out.println("Enter 1 to train using a training data file, enter 2 to use a trained weight settings data file");
             int choice = kb.nextInt();
-            kb.nextLine();
 
             switch(choice){
 
@@ -66,28 +65,32 @@ public class proj1 {
                     break;
                 
                     case 2: // Test
-                    perceptron pTest = new perceptron();
-                    System.out.println("Enter the testing/deploying data file name:");
-                    // kb.nextLine(); // Consume newline left-over
-                    String testingDataFile = kb.nextLine();
+                        perceptron pTest = new perceptron();
+
+                        System.out.println("Enter the trained weight settings data file name:");
+                        kb.nextLine();
+                        String weightSettingsFileTest = kb.nextLine();
+                        pTest.loadWeights(weightSettingsFileTest);
                 
-                    pTest.loadWeights(testingDataFile); // Load the trained weights
-                
-                    System.out.println("Enter a file name to save the testing/deploying results:");
-                    String resultsFile = kb.nextLine(); // Get the filename to save the results
-                
-                    // // Here, you need to specify the theta value for testing. Assuming you have a default or a way to obtain it.
-                    System.out.println("Enter the threshold theta:");
-                    double thetaTest = Double.parseDouble(kb.nextLine());
-                    pTest.test(testingDataFile, resultsFile, thetaTest); // Call the test method
-                
-                    // Asking user if they wish to run again
-                    System.out.println("Do you want to run the program again?(Y/N)");
-                    String rerun = kb.nextLine();
-                    if (!rerun.equalsIgnoreCase("Y")) {
-                        run = false;
-                    }
-                    break;
+                        System.out.println("Enter the testing data file name:");
+                        // kb.nextLine(); // Consume newline left-over
+                        String testingDataFile = kb.nextLine();            
+                    
+                        System.out.println("Enter a file name to save the testing/deploying results:");
+                        String resultsFile = kb.nextLine(); // Get the filename to save the results
+                    
+                        // // Here, you need to specify the theta value for testing. Assuming you have a default or a way to obtain it.
+                        System.out.println("Enter the threshold theta:");
+                        double thetaTest = Double.parseDouble(kb.nextLine());
+                        pTest.test(testingDataFile, resultsFile, thetaTest); // Call the test method
+                    
+                        // Asking user if they wish to run again
+                        System.out.println("Do you want to run the program again?(Y/N)");
+                        String rerun = kb.nextLine();
+                        if (!rerun.equalsIgnoreCase("Y")) {
+                            run = false;
+                        }
+                        break;
                 
                 default:
                     System.out.println("Invalid input. Please enter 1 or 2.");
