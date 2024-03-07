@@ -1,1 +1,1 @@
-Model,Randomized,Epochs,Weights,LearningRate, Threshold, Theta, TestFile, Accuracy
+Model,Randomized,Epochs,Weights,LearningRate, Threshold, Theta, TestFile, ResultsFile, Accuracy
