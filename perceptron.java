@@ -156,7 +156,7 @@ public class perceptron {
                 undecided = true;
             }
 
-            if(!undecided && targets == output) {
+            if(!undecided && (k % outputSize) == decision) {
                 correctPredictions++;
             }
     
@@ -168,7 +168,8 @@ public class perceptron {
             if (undecided) {
                 writer.println("undecided");
             } else {
-                writer.println(charList.get(decision)); // Repeating for classified for consistency
+                String letter = charList.get(decision).substring(0, charList.get(decision).length() - 1);
+                writer.println(letter); // Repeating for classified for consistency
             }
             writer.println(formatOutput(output));
         }
