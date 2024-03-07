@@ -7,6 +7,8 @@ Description: This file is responsible for reading train/test files, writing resu
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -60,9 +62,23 @@ public class FileHandler {
         return new InputData(numDimensions, outputSize, numPairs, charList, trainingSet, targetSet);
     }
 
-    public void writeResults(String filePath, ArrayList<Integer> results) {
-        // TODO: Implement method to write results to file
-        throw new UnsupportedOperationException("Unimplemented method 'writeResults'");
+    // Save and append to csv file for analysis
+    public void addResultsToCSV(String testingDataFile, int randomized, int numEpochs, double LearningRate, double Threshold, double Theta,
+                        String TestFile, String ResultsFile, double Accuracy) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append(testingDataFile).append(",");
+        sb.append(randomized).append(",");
+        sb.append(numEpochs).append(",");
+        sb.append(LearningRate).append(",");
+        sb.append(Threshold).append(",");
+        sb.append(Theta).append(",");
+        sb.append(TestFile).append(",");
+        sb.append(ResultsFile).append(",");
+        sb.append(Accuracy).append("\n");
+
+        FileWriter pw = new FileWriter("/results/results.csv", true);
+        pw.write(sb.toString());
+        pw.close();
     }
 
     // Class to hold the data read from the input file
