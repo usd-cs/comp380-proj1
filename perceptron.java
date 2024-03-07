@@ -95,7 +95,7 @@ public class perceptron {
         try {
             String path = "weights/" + weightSettingsFile;
             PrintWriter writer = new PrintWriter(path, "UTF-8");
-            writer.println(numDimensions + " " + outputSize + " " + numPairs + " " + duration);
+            writer.println(numDimensions + " " + outputSize + " " + numPairs);
             writer.println(weights.toString().replace("[", "").replace("]", "").replace(",", ""));
             writer.println(biases.toString().replace("[", "").replace("]", "").replace(",", ""));
             writer.close();
@@ -237,7 +237,7 @@ public class perceptron {
         numDimensions = Integer.parseInt(dimensions[0]);
         outputSize = Integer.parseInt(dimensions[1]);
         numPairs = Integer.parseInt(dimensions[2]);
-        duration = Long.parseLong(dimensions[3]);
+        // duration = Long.parseLong(dimensions[3]);
         if (dimensions.length < 3) throw new IOException("Dimensions line does not contain enough values.");
     
         // Assuming weights are on the next line

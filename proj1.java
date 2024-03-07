@@ -5,7 +5,6 @@ Date: 3/2/2024
 Description: This is the driver file of our program. It will prompt the user for perceptron hyperparamaters then train it.
  */
 
- // TODO: For the most part, this is almost done. Just need to return accuracy and finish fileHandler and perceptron classes.
 
 import java.io.IOException;
 import java.util.Scanner;
