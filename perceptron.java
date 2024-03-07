@@ -111,9 +111,12 @@ public class perceptron {
         ArrayList<ArrayList<Integer>> targetSet = inputData.targetSet;
         ArrayList<String> charList = inputData.charList;
 
-    
-        // Pass resultsFile to the testing method
-        testPerceptron(testSet, targetSet, weights, biases, theta, resultsFile, charList);
+        if(numDimensions == inputData.numDimensions && outputSize == inputData.outputSize) {
+            // Pass resultsFile to the testing method
+            testPerceptron(testSet, targetSet, weights, biases, theta, resultsFile, charList);
+        } else {
+            throw new IOException("Dimensions don't line up");
+        }
     }
 
     public void testPerceptron(ArrayList<ArrayList<Integer>> testSet, ArrayList<ArrayList<Integer>> targetSet, ArrayList<Double> weights, ArrayList<Double> biases, double theta, String resultsFile,  ArrayList<String> charList) throws IOException {
@@ -130,7 +133,9 @@ public class perceptron {
             ArrayList<Integer> output = new ArrayList<>();
     
             // Compute the activation of each output unit
+            int undecidedCount = 0;
             boolean undecided = false;
+            int decision = 0;
             for (int j = 0; j < outputSize; j++) {
                 double y_in_j = biases.get(j);
                 for (int i = 0; i < numDimensions; i++) {
@@ -142,16 +147,17 @@ public class perceptron {
                 output.add(y_j);
     
                 // Check for undecided condition
-                if (y_j == 1 && undecided) {
-                    undecided = true;  // Already found a +1, this makes it undecided
-                } else if (y_j == 1) {
-                    undecided = false; // Found the first +1
+                if (y_j == 1) {
+                    decision = j;
+                    undecidedCount += 1;  // Already found a +1, this makes it undecided
                 }
-    
-                // Count correct predictions
-                if (targets.get(j) == y_j) {
-                    correctPredictions++;
-                }
+            }
+            if(undecidedCount > 1 || undecidedCount == 0) {
+                undecided = true;
+            }
+
+            if(!undecided && targets == output) {
+                correctPredictions++;
             }
     
             // Write actual and classified output
@@ -159,16 +165,16 @@ public class perceptron {
             writer.println(charList.get(k)); // Assuming charList contains the corresponding characters
             writer.println(formatOutput(targets));
             writer.println("Classified Output:");
-            writer.println(charList.get(k)); // Repeating for classified for consistency
             if (undecided) {
                 writer.println("undecided");
             } else {
-                writer.println(formatOutput(output));
+                writer.println(charList.get(decision)); // Repeating for classified for consistency
             }
+            writer.println(formatOutput(output));
         }
     
         // Calculate accuracy
-        double accuracy = (double) correctPredictions / (totalSamples * outputSize);
+        double accuracy = (double) correctPredictions / totalSamples;
     
         // Write the accuracy to the results file
         writer.println("Accuracy: " + accuracy * 100 + "%");
