@@ -35,7 +35,7 @@ public class perceptron {
          * I built a static class to access the data to keep this file clean.
          * So the function below returns that class. 
          */
-        FileHandler.InputData inputData = fileHandler.readInputData(trainingDataFile);
+        FileHandler.InputData inputData = fileHandler.readInputData(trainingDataFile, fileHandler.trainPath);
         numDimensions = inputData.numDimensions;
         outputSize = inputData.outputSize;
         numPairs = inputData.numPairs;
@@ -109,59 +109,85 @@ public class perceptron {
             e.printStackTrace();
         }
     }
-
-    public void test(String testingDataFile, String resultsFile, double theta) throws FileNotFoundException {
+    public void test(String testingDataFile, String resultsFile, double theta) throws FileNotFoundException, IOException {
         // Read testing data
-        FileHandler.InputData inputData = fileHandler.readInputData(testingDataFile);
+        FileHandler.InputData inputData = fileHandler.readInputData(testingDataFile, fileHandler.weightPath);
         ArrayList<ArrayList<Integer>> testSet = inputData.trainingSet;
         ArrayList<ArrayList<Integer>> targetSet = inputData.targetSet;
-        int numDimensions = inputData.numDimensions;
-        int outputSize = inputData.outputSize;
-        int numPairs = inputData.numPairs;
+        ArrayList<String> charList = inputData.charList;
 
-        // Test the perceptron
-        testPerceptron(testSet, targetSet, weights, biases, theta);
+    
+        // Pass resultsFile to the testing method
+        testPerceptron(testSet, targetSet, weights, biases, theta, resultsFile, charList);
     }
-
-    public void testPerceptron(ArrayList<ArrayList<Integer>> testSet, ArrayList<ArrayList<Integer>> targetSet, ArrayList<Double> weights, ArrayList<Double> biases, double theta) {
+    public void testPerceptron(ArrayList<ArrayList<Integer>> testSet, ArrayList<ArrayList<Integer>> targetSet, ArrayList<Double> weights, ArrayList<Double> biases, double theta, String resultsFile,  ArrayList<String> charList) throws IOException {
         int correctPredictions = 0;
         int totalSamples = testSet.size();
-
+    
+        // Open the file writer
+        PrintWriter writer = new PrintWriter(resultsFile, "UTF-8");
+    
         for (int k = 0; k < totalSamples; k++) {
             ArrayList<Integer> input = testSet.get(k);
             ArrayList<Integer> targets = targetSet.get(k);
-
-            ArrayList<Integer> activations = new ArrayList<>(input);
-
-            // Compute activation of each output unit
-            for (int j = 0; j < biases.size(); j++) {
+            ArrayList<Integer> output = new ArrayList<>();
+    
+            // Compute the activation of each output unit
+            boolean undecided = false;
+            for (int j = 0; j < outputSize; j++) {
                 double y_in_j = biases.get(j);
-
-                for (int i = 0; i < weights.size(); i++) {
-                    y_in_j += activations.get(i) * weights.get(i);
+                for (int i = 0; i < numDimensions; i++) {
+                    y_in_j += input.get(i) * weights.get(i);
                 }
-
+    
                 // Activation function
-                int y_j;
-                if (y_in_j > theta) {
-                    y_j = 1;
-                } else if (-theta <= y_in_j && y_in_j <= theta) {
-                    y_j = 0;
-                } else {
-                    y_j = -1;
+                int y_j = (y_in_j > theta) ? 1 : (y_in_j < -theta) ? -1 : 0;
+                output.add(y_j);
+    
+                // Check for undecided condition
+                if (y_j == 1 && undecided) {
+                    undecided = true;  // Already found a +1, this makes it undecided
+                } else if (y_j == 1) {
+                    undecided = false; // Found the first +1
                 }
-
-                // Compare with target and count correct predictions
-                if (y_j == targets.get(j)) {
+    
+                // Count correct predictions
+                if (targets.get(j) == y_j) {
                     correctPredictions++;
                 }
             }
+    
+            // Write actual and classified output
+            writer.println("Actual Output:");
+            writer.println(charList.get(k)); // Assuming charList contains the corresponding characters
+            writer.println(formatOutput(targets));
+            writer.println("Classified Output:");
+            writer.println(charList.get(k)); // Repeating for classified for consistency
+            if (undecided) {
+                writer.println("undecided");
+            } else {
+                writer.println(formatOutput(output));
+            }
         }
-
-        // Compute accuracy
-        double accuracy = (double) correctPredictions / totalSamples;
-        System.out.println("Accuracy: " + (accuracy * 100) + "%");
+    
+        // Calculate accuracy
+        double accuracy = (double) correctPredictions / (totalSamples * outputSize);
+    
+        // Write the accuracy to the results file
+        writer.println("Accuracy: " + accuracy * 100 + "%");
+    
+        // Close the file writer
+        writer.close();
     }
+    
+    private String formatOutput(ArrayList<Integer> output) {
+        StringBuilder sb = new StringBuilder();
+        for (int value : output) {
+            sb.append(value).append(" ");
+        }
+        return sb.toString().trim();
+    }
+    
 
     public String getEpochs() {
         return Integer.toString(numEpochs);
@@ -188,7 +214,7 @@ public class perceptron {
     
 
     public void loadWeights(String weightSettingsFile) throws IOException {
-        String fullPath = "weights/" + weightSettingsFile;
+        String fullPath = fileHandler.weightPath + weightSettingsFile;
         File file = new File(fullPath);
         
         if (!file.exists()) {

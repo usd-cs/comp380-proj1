@@ -65,16 +65,22 @@ public class proj1 {
                     }
                     break;
                 
-                case 2: // Test
+                    case 2: // Test
                     perceptron pTest = new perceptron();
                     System.out.println("Enter the testing/deploying data file name:");
+                    // kb.nextLine(); // Consume newline left-over
                     String testingDataFile = kb.nextLine();
-
-                    pTest.loadWeights(testingDataFile);
+                
+                    pTest.loadWeights(testingDataFile); // Load the trained weights
+                
                     System.out.println("Enter a file name to save the testing/deploying results:");
-                    String resultsFile = kb.nextLine();
-                    // pTest.test(testingDataFile, resultsFile);
-
+                    String resultsFile = kb.nextLine(); // Get the filename to save the results
+                
+                    // // Here, you need to specify the theta value for testing. Assuming you have a default or a way to obtain it.
+                    System.out.println("Enter the threshold theta:");
+                    double thetaTest = Double.parseDouble(kb.nextLine());
+                    pTest.test(testingDataFile, resultsFile, thetaTest); // Call the test method
+                
                     // Asking user if they wish to run again
                     System.out.println("Do you want to run the program again?(Y/N)");
                     String rerun = kb.nextLine();

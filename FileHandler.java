@@ -17,8 +17,8 @@ public class FileHandler {
     String resultPath = "results/";
 
     // read input data from file, can be used for training or testing
-    public InputData readInputData(String filePath) throws FileNotFoundException {
-        File trainData = new File(trainPath + filePath);
+    public InputData readInputData(String filePath, String directory) throws FileNotFoundException {
+        File trainData = new File(directory + filePath);
         Scanner kb = new Scanner(trainData);
 
         int numDimensions = kb.nextInt();
@@ -55,6 +55,8 @@ public class FileHandler {
         kb.close();
 
         // returning multiple values
+
+    
         return new InputData(numDimensions, outputSize, numPairs, charList, trainingSet, targetSet);
     }
 
