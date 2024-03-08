@@ -92,7 +92,7 @@ public class perceptron {
 
         // Compile data about training into a string
         StringBuilder sb = new StringBuilder();
-        sb.append(trainingDataFile).append(",");
+        sb.append(weightSettingsFile).append(",");
         sb.append(weightInit).append(",");
         sb.append(numEpochs).append(",");
         sb.append(alpha).append(",");
