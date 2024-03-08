@@ -1,0 +1,127 @@
+Actual Output:
+A1
+1 -1 -1 -1 -1 -1 -1
+Classified Output:
+A
+1 -1 -1 -1 -1 -1 -1
+Actual Output:
+B1
+-1 1 -1 -1 -1 -1 -1
+Classified Output:
+B
+-1 1 -1 -1 -1 -1 -1
+Actual Output:
+C1
+-1 -1 1 -1 -1 -1 -1
+Classified Output:
+C
+-1 -1 1 -1 -1 -1 -1
+Actual Output:
+D1
+-1 -1 -1 1 -1 -1 -1
+Classified Output:
+D
+-1 -1 -1 1 -1 -1 -1
+Actual Output:
+E1
+-1 -1 -1 -1 1 -1 -1
+Classified Output:
+E
+-1 -1 -1 -1 1 -1 -1
+Actual Output:
+J1
+-1 -1 -1 -1 -1 1 -1
+Classified Output:
+J
+-1 -1 -1 -1 -1 1 -1
+Actual Output:
+K1
+-1 -1 -1 -1 -1 -1 1
+Classified Output:
+K
+-1 -1 -1 -1 -1 -1 1
+Actual Output:
+A2
+1 -1 -1 -1 -1 -1 -1
+Classified Output:
+undecided
+-1 -1 -1 -1 -1 -1 -1
+Actual Output:
+B2
+-1 1 -1 -1 -1 -1 -1
+Classified Output:
+B
+-1 1 -1 -1 -1 -1 -1
+Actual Output:
+C2
+-1 -1 1 -1 -1 -1 -1
+Classified Output:
+C
+-1 -1 1 -1 -1 -1 -1
+Actual Output:
+D2
+-1 -1 -1 1 -1 -1 -1
+Classified Output:
+D
+-1 -1 -1 1 -1 -1 -1
+Actual Output:
+E2
+-1 -1 -1 -1 1 -1 -1
+Classified Output:
+E
+-1 -1 -1 -1 1 -1 -1
+Actual Output:
+J2
+-1 -1 -1 -1 -1 1 -1
+Classified Output:
+J
+-1 -1 -1 -1 -1 1 -1
+Actual Output:
+K2
+-1 -1 -1 -1 -1 -1 1
+Classified Output:
+K
+-1 -1 -1 0 -1 -1 1
+Actual Output:
+A3
+1 -1 -1 -1 -1 -1 -1
+Classified Output:
+undecided
+-1 -1 -1 -1 -1 -1 -1
+Actual Output:
+B3
+-1 1 -1 -1 -1 -1 -1
+Classified Output:
+B
+-1 1 -1 -1 -1 -1 -1
+Actual Output:
+C3
+-1 -1 1 -1 -1 -1 -1
+Classified Output:
+C
+-1 -1 1 -1 -1 -1 -1
+Actual Output:
+D3
+-1 -1 -1 1 -1 -1 -1
+Classified Output:
+undecided
+-1 -1 -1 -1 -1 -1 -1
+Actual Output:
+E3
+-1 -1 -1 -1 1 -1 -1
+Classified Output:
+E
+-1 -1 -1 -1 1 -1 -1
+Actual Output:
+J3
+-1 -1 -1 -1 -1 1 -1
+Classified Output:
+J
+-1 -1 -1 -1 -1 1 -1
+Actual Output:
+K3
+-1 -1 -1 -1 -1 -1 1
+Classified Output:
+K
+-1 -1 -1 -1 -1 -1 1
+Accuracy: 85.71428571428571%
