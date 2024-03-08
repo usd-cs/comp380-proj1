@@ -63,20 +63,14 @@ public class FileHandler {
     }
 
     // Save and append to csv file for analysis
-    public void addResultsToCSV(String testingDataFile, int randomized, int numEpochs, double LearningRate, double Threshold, double Theta,
-                        String TestFile, String ResultsFile, double Accuracy) throws IOException {
+    public void addResultsToCSV(String otherInfo, String TestFile, String ResultsFile, double Accuracy) throws IOException {
         StringBuilder sb = new StringBuilder();
-        sb.append(testingDataFile).append(",");
-        sb.append(randomized).append(",");
-        sb.append(numEpochs).append(",");
-        sb.append(LearningRate).append(",");
-        sb.append(Threshold).append(",");
-        sb.append(Theta).append(",");
+        sb.append(otherInfo);
         sb.append(TestFile).append(",");
         sb.append(ResultsFile).append(",");
         sb.append(Accuracy).append("\n");
 
-        FileWriter pw = new FileWriter("/results/results.csv", true);
+        FileWriter pw = new FileWriter(resultPath + "results.csv", true);
         pw.write(sb.toString());
         pw.close();
     }

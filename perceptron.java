@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Random;
 import java.io.File;
@@ -26,6 +27,7 @@ public class perceptron {
     int outputSize;
     int numPairs;
     long duration;
+    String otherInfo;
 
     // Train method: called from main class
     public void train(String trainingDataFile, int weightInit, int maxEpochs, String weightSettingsFile, double alpha,
@@ -44,7 +46,6 @@ public class perceptron {
 
         // Logging Time for Validating hyperparameters
         long startTime = System.nanoTime();
-        int skipped = 0;
         while (!stoppingCondition && numEpochs < maxEpochs) {
             numEpochs++;
             stoppingCondition = true;
@@ -88,6 +89,16 @@ public class perceptron {
         }
         long endTime = System.nanoTime();
         duration = (endTime - startTime);
+
+        // Compile data about training into a string
+        StringBuilder sb = new StringBuilder();
+        sb.append(trainingDataFile).append(",");
+        sb.append(weightInit).append(",");
+        sb.append(numEpochs).append(",");
+        sb.append(alpha).append(",");
+        sb.append(BigDecimal.valueOf(threshold).stripTrailingZeros().toPlainString()).append(",");
+        sb.append(theta).append(",");
+        otherInfo = sb.toString();
     }
 
     public void SaveWeights(String weightSettingsFile) {
@@ -103,6 +114,7 @@ public class perceptron {
                 writer.print("\n");
             }
             writer.println(biases.toString().replace("[", "").replace("]", "").replace(",", ""));
+            writer.println(otherInfo);
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,13 +130,14 @@ public class perceptron {
 
         if(numDimensions == inputData.numDimensions && outputSize == inputData.outputSize) {
             // Pass resultsFile to the testing method
-            testPerceptron(testSet, targetSet, theta, resultsFile, charList);
+            double accuracy = testPerceptron(testSet, targetSet, theta, resultsFile, charList);
+            fileHandler.addResultsToCSV(otherInfo, testingDataFile, resultsFile, accuracy);
         } else {
             throw new IOException("Dimensions don't line up");
         }
     }
 
-    public void testPerceptron(ArrayList<ArrayList<Integer>> testSet, ArrayList<ArrayList<Integer>> targetSet, double theta, String resultsFile,  ArrayList<String> charList) throws IOException {
+    public double testPerceptron(ArrayList<ArrayList<Integer>> testSet, ArrayList<ArrayList<Integer>> targetSet, double theta, String resultsFile,  ArrayList<String> charList) throws IOException {
         int correctPredictions = 0;
         int totalSamples = testSet.size();
         String path = "results/" + resultsFile;
@@ -187,6 +200,8 @@ public class perceptron {
     
         // Close the file writer
         writer.close();
+
+        return accuracy;
     }
     
     private String formatOutput(ArrayList<Integer> output) {
@@ -272,6 +287,9 @@ public class perceptron {
         for (String value : biasValues) {
             biases.add(Double.parseDouble(value));
         }
+
+        // Assuming last line is otherInfo
+        otherInfo = reader.readLine();
     
         reader.close();
     }

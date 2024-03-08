@@ -8,6 +8,7 @@ Description: This is the driver file of our program. It will prompt the user for
 
 import java.io.IOException;
 import java.util.Scanner;
+import java.math.BigDecimal;
 
 public class proj1 {
     public static void main(String[] args) throws IOException {
@@ -51,7 +52,9 @@ public class proj1 {
                     // Train the perceptron
                     perceptron p = new perceptron();
                     p.train(trainingDataFile, weightInit, maxEpochs, weightSettingsFile, alpha, theta, threshold);
+                    // Store info about the training
                     p.SaveWeights(weightSettingsFile);
+
                     System.out.println("Training converged after " + p.getEpochs() + " epochs. The trained weight settings have been saved to " + weightSettingsFile);
 
                     // Asking user if they wish to run again
