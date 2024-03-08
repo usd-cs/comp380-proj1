@@ -1,1 +1,9 @@
 Model,Randomized,Epochs,Weights,LearningRate, Threshold, Theta, TestFile, ResultsFile, Accuracy
+zeroWeights-quarterLR-tenTheta.txt,0,7,0.25,0.00001,10.0,sample-data.txt,zero-quarter-ten-sample.txt,0.6190476190476191
+zeroWeights-quarterLR-oneTheta.txt,0,4,0.25,0.00001,1.0,sample-data.txt,zero-quarter-one-sample.txt,0.6190476190476191
+zeroWeights-quarterLR-halfTheta.txt,0,3,0.25,0.00001,0.5,sample-data.txt,zero-quarter-half-sample.txt,0.8095238095238095
+zeroWeights-quarterLR-zeroTheta.txt,0,3,0.25,0.00001,0.0,sample-data.txt,zero-quarter-zero-sample.txt,0.6190476190476191
+zeroWeights-halfLR-oneTheta.txt,0,4,0.5,0.00001,1.0,sample-data.txt,zero-half-one.txt,0.7142857142857143
+zeroWeights-halfLR-zeroTheta.txt,0,3,0.5,0.00001,0.0,sample-data.txt,zero-half-zero-sample.txt,0.6666666666666666
+zeroWeights-oneLR-tenTheta.txt,0,5,1.0,0.00001,10.0,sample-data.txt,zero-one-ten-sample.txt,0.7619047619047619
+zeroWeights-oneLr-oneTheta.txt,0,4,1.0,0.00001,1.0,sample-data.txt,zero-one-one-sample.txt,0.7142857142857143
