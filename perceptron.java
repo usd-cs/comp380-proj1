@@ -19,7 +19,7 @@ public class perceptron {
     FileHandler fileHandler = new FileHandler();
 
     int numEpochs = 0;
-    public ArrayList<Double> weights;
+    public ArrayList<double[]> weights; // A 2d array where the arraylist is for each output node and the array is the weights
     public ArrayList<Double> biases;
     public boolean stoppingCondition;
     int numDimensions;
@@ -34,7 +34,7 @@ public class perceptron {
         numDimensions = inputData.numDimensions;
         outputSize = inputData.outputSize;
         numPairs = inputData.numPairs;
-        weights = new ArrayList<>(numDimensions);
+        weights = new ArrayList<>(outputSize);
         biases = new ArrayList<>(outputSize);
         initializeWeightsAndBiases(weightInit);
         stoppingCondition = false;
@@ -44,9 +44,10 @@ public class perceptron {
 
         // Logging Time for Validating hyperparameters
         long startTime = System.nanoTime();
+        int skipped = 0;
         while (!stoppingCondition && numEpochs < maxEpochs) {
             numEpochs++;
-            stoppingCondition = true;  
+            stoppingCondition = true;
 
             for (int k = 0; k < trainingSet.size(); k++) {
                 ArrayList<Integer> input = trainingSet.get(k);
@@ -56,11 +57,11 @@ public class perceptron {
                 ArrayList<Integer> activations = new ArrayList<>(input);
             
                 // compute activation of each output unit
-                for (int j = 0; j < biases.size(); j++) {
+                for (int j = 0; j < outputSize; j++) {
                     double y_in_j = biases.get(j);
             
-                    for (int i = 0; i < weights.size(); i++) {
-                        y_in_j += activations.get(i) * weights.get(i);
+                    for (int i = 0; i < weights.get(j).length; i++) {
+                        y_in_j += activations.get(i) * weights.get(j)[i];
                     }
             
                     // activation function
@@ -77,12 +78,10 @@ public class perceptron {
                     int target = targets.get(j);  // Get the target for this output unit
                     if (Math.abs(target - y_j) > threshold) {
                         biases.set(j, biases.get(j) + target);
-                        for (int i = 0; i < weights.size(); i++) {
-                            weights.set(i, weights.get(i) + alpha * (target - y_j) * activations.get(i));
+                        for (int i = 0; i < weights.get(j).length; i++) {
+                            weights.get(j)[i] += (alpha * target * activations.get(i));
                         }
                         stoppingCondition = false;  
-                    } else {
-                        break;
                     }
                 }
             }
@@ -96,7 +95,13 @@ public class perceptron {
             String path = "weights/" + weightSettingsFile;
             PrintWriter writer = new PrintWriter(path, "UTF-8");
             writer.println(numDimensions + " " + outputSize + " " + numPairs);
-            writer.println(weights.toString().replace("[", "").replace("]", "").replace(",", ""));
+            for (int j = 0; j < outputSize; j++) {
+                //writer.println(weights.get(j).toString().replace("[", "").replace("]", "").replace(",", ""));
+                for (int i = 0; i < numDimensions; i++) {
+                    writer.print(weights.get(j)[i] + " ");
+                }
+                writer.print("\n");
+            }
             writer.println(biases.toString().replace("[", "").replace("]", "").replace(",", ""));
             writer.close();
         } catch (Exception e) {
@@ -113,13 +118,13 @@ public class perceptron {
 
         if(numDimensions == inputData.numDimensions && outputSize == inputData.outputSize) {
             // Pass resultsFile to the testing method
-            testPerceptron(testSet, targetSet, weights, biases, theta, resultsFile, charList);
+            testPerceptron(testSet, targetSet, theta, resultsFile, charList);
         } else {
             throw new IOException("Dimensions don't line up");
         }
     }
 
-    public void testPerceptron(ArrayList<ArrayList<Integer>> testSet, ArrayList<ArrayList<Integer>> targetSet, ArrayList<Double> weights, ArrayList<Double> biases, double theta, String resultsFile,  ArrayList<String> charList) throws IOException {
+    public void testPerceptron(ArrayList<ArrayList<Integer>> testSet, ArrayList<ArrayList<Integer>> targetSet, double theta, String resultsFile,  ArrayList<String> charList) throws IOException {
         int correctPredictions = 0;
         int totalSamples = testSet.size();
         String path = "results/" + resultsFile;
@@ -139,7 +144,7 @@ public class perceptron {
             for (int j = 0; j < outputSize; j++) {
                 double y_in_j = biases.get(j);
                 for (int i = 0; i < numDimensions; i++) {
-                    y_in_j += input.get(i) * weights.get(i);
+                    y_in_j += input.get(i) * weights.get(j)[i];
                 }
     
                 // Activation function
@@ -200,18 +205,20 @@ public class perceptron {
     // Finished Implementation
     public void initializeWeightsAndBiases(int weightInit) {
         if (weightInit == 0) {
-            for (int i = 0; i < numDimensions; i++) {
-                weights.add(0.0);
-            }
             for (int j = 0; j < outputSize; j++) {
                 biases.add(0.0);
+                weights.add(new double[numDimensions]);
+                for (int i = 0; i < numDimensions; i++) {
+                    weights.get(j)[i] = 0.0;
+                }
             }
         } else {
-            for (int i = 0; i < numDimensions; i++) {
-                weights.add(random.nextDouble() - 0.5);
-            }
             for (int j = 0; j < outputSize; j++) {
                 biases.add(random.nextDouble() - 0.5);
+                weights.add(new double[numDimensions]);
+                for (int i = 0; i < numDimensions; i++) {
+                    weights.get(j)[i] = random.nextDouble() - 0.5;
+                }
             }
         }
     }
@@ -248,13 +255,16 @@ public class perceptron {
         if (dimensions.length < 3) throw new IOException("Dimensions line does not contain enough values.");
     
         // Assuming weights are on the next line
-        line = reader.readLine();
-        if (line == null) throw new IOException("Unexpected end of file while reading weights.");
-        String[] weightValues = line.trim().split(" ");
-        for (String value : weightValues) {
-            weights.add(Double.parseDouble(value));
+        for (int j = 0; j < outputSize; j++) {
+            line = reader.readLine();
+            if (line == null) throw new IOException("Unexpected end of file while reading weights.");
+            String[] weightValues = line.trim().split(" ");
+            weights.add(new double[numDimensions]);
+            for (int i = 0; i < numDimensions; i++) {
+                weights.get(j)[i] = Double.parseDouble(weightValues[i]);
+            }
         }
-    
+
         // Assuming biases are on the next line
         line = reader.readLine();
         if (line == null) throw new IOException("Unexpected end of file while reading biases.");
