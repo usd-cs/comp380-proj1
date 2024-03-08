@@ -1,4 +1,4 @@
-Model,Randomized,Epochs,Weights,LearningRate, Threshold, Theta, TestFile, ResultsFile, Accuracy
+Model,Randomized,Epochs,LearningRate, Threshold, Theta, TestFile, ResultsFile, Accuracy
 zeroWeights-quarterLR-tenTheta.txt,0,7,0.25,0.00001,10.0,sample-data.txt,zero-quarter-ten-sample.txt,0.6190476190476191
 zeroWeights-quarterLR-oneTheta.txt,0,4,0.25,0.00001,1.0,sample-data.txt,zero-quarter-one-sample.txt,0.6190476190476191
 zeroWeights-quarterLR-halfTheta.txt,0,3,0.25,0.00001,0.5,sample-data.txt,zero-quarter-half-sample.txt,0.8095238095238095
@@ -13,3 +13,11 @@ randomWeights-halfLR-oneTheta.txt,1,3,0.5,0.00001,1.0,sample-data.txt,random-hal
 randomWeights-quarterLR-oneTheta.txt,1,4,0.25,0.00001,1.0,sample-data.txt,random-quarter-one.txt,0.8571428571428571
 randomWeights-oneLR-oneTheta.txt,1,5,1.0,0.00001,1.0,sample-data.txt,random-one-one-sample.txt,0.8571428571428571
 randomWeights-halfLR-quarterTheta.txt,1,3,0.5,0.00001,0.25,sample-data.txt,random-half-quarter-sample.txt,0.7619047619047619
+randomWeights-oneLR-quarterTheta.txt,1,6,1.0,0.00001,0.25,sample-data.txt,random-one-quarter-sample.txt,0.8095238095238095
+randomWeights-halfLR-oneTheta.txt,1,3,0.5,0.00001,1.0,HNI-Data.txt,random-half-one-HNI.txt,0.7142857142857143
+zeroWeight-quarterLR-halfTheta.txt,0,3,0.25,0.00001,0.5,HNI-data.txt,zero-quarter-half-HNI.txt,0.7142857142857143
+randomWeights-quarterLR-oneTheta.txt,1,4,0.25,0.00001,1.0,HNI-data.txt,random-quarter-one-HNI.txt,0.7142857142857143
+zeroWeights-oneLR-tenTheta.txt,0,5,1.0,0.00001,10.0,HNI-data.txt,zero-one-ten-HNI.txt,0.7142857142857143
+randomWeights-halfLR-tenTheta.txt,1,5,0.5,0.00001,10.0,HNI-data.txt,random-half-ten-HNI.txt,0.47619047619047616
+randomWeights-halfLR-fiftyTheta.txt,1,10,0.5,0.00001,50.0,HNI-data.txt,random-half-fifty-HNI.txt,0.23809523809523808
+zeroWeights-halfLR-tenTheta.txt,0,5,0.5,0.00001,10.0,HNI-data.txt,zero-half-ten-HNI.txt,0.6190476190476191
